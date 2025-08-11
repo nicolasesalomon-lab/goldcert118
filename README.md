@@ -279,3 +279,20 @@ Log de “todo ok” con URLs.
 12) Estilo UI
 Paleta “GoldCert”: oro/dorado + gris oscuro/negro, tipografía sistema, cards con sombras suaves, layout con header + nav y secciones (inspirado en tu HTML). No copiar código tal cual; reinterpretar con Tailwind y shadcn/ui. Fronthtml_grok4
 
+
+## Base de datos
+
+1. Instalar dependencias backend:
+   ```bash
+   pip install -r backend/requirements.txt
+   ```
+2. Aplicar la migración inicial:
+   ```bash
+   alembic -c backend/alembic.ini upgrade head
+   ```
+3. Cargar los datos de ejemplo:
+   ```bash
+   python -m backend.seed
+   ```
+
+La base usa SQLite por defecto (`sqlite:///./goldcert.db`). Si la variable de entorno `DATABASE_URL` está definida, se usará esa conexión.
