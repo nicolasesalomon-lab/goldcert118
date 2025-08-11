@@ -8,6 +8,14 @@ Una fuente de verdad de API y un solo origen en dev para evitar CORS: el fronten
 
 DB simple en dev: SQLite (archivo local). Postgres opcional por DATABASE_URL.
 
+### Base de datos
+
+```bash
+cd backend
+alembic upgrade head
+python -m app.seed
+```
+
 Estabilidad > “último hype”: FastAPI + SQLAlchemy 2 + Alembic + Pydantic v2; React + Vite + TS + Tailwind + shadcn/ui + React Query + react-hook-form + Zod.
 
 Ergonomía: toasts para éxito/error, loaders decentes, tablas con búsqueda/orden/paginación, combobox “creatable”.
