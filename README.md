@@ -310,3 +310,19 @@ La base usa SQLite por defecto (`sqlite:///./goldcert.db`). Si la variable de en
    uvicorn backend.app:app --reload --port 8000
    ```
 3. Docs available at `http://localhost:8000/docs`.
+
+## Frontend
+
+1. Install dependencies and run the dev server:
+   ```bash
+   cd frontend
+   npm install
+   npm run dev
+   ```
+   The Vite config proxies any request starting with `/api` to the backend running at `http://localhost:8000`.
+
+2. Build for production:
+   ```bash
+   cd frontend
+   npm run build
+   ```
