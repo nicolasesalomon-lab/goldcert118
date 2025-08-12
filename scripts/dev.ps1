@@ -9,9 +9,8 @@ if (-not (Test-Path '.venv')) {
 python -m pip install -r backend/requirements.txt
 ruff check backend
 
-try {
-    alembic -c backend/alembic.ini upgrade head
-} catch {
+alembic -c backend/alembic.ini upgrade head
+if ($LASTEXITCODE -ne 0) {
     alembic -c backend/alembic.ini revision --autogenerate -m 'init'
     alembic -c backend/alembic.ini upgrade head
 }
