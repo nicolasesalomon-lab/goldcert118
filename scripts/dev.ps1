@@ -9,10 +9,13 @@ if (-not (Test-Path '.venv')) {
 python -m pip install -r backend/requirements.txt
 ruff check backend
 
-alembic -c backend/alembic.ini upgrade head
-if ($LASTEXITCODE -ne 0) {
-    alembic -c backend/alembic.ini revision --autogenerate -m 'init'
-    alembic -c backend/alembic.ini upgrade head
+$upgrade = alembic -c backend/alembic.ini upgrade head 2>&1
+$exit = $LASTEXITCODE
+$upgrade | ForEach-Object { Write-Host $_ }
+if ($exit -ne 0) {
+    $rev = alembic -c backend/alembic.ini revision --autogenerate -m 'init' 2>&1
+    $rev | ForEach-Object { Write-Host $_ }
+    alembic -c backend/alembic.ini upgrade head 2>&1 | ForEach-Object { Write-Host $_ }
 }
 
 python -m backend.seed
