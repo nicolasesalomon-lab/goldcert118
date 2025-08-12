@@ -9,11 +9,10 @@ if (-not (Test-Path '.venv')) {
 python -m pip install -r backend/requirements.txt
 ruff check backend
 
-try {
-    alembic -c backend/alembic.ini upgrade head
-} catch {
-    alembic -c backend/alembic.ini revision --autogenerate -m 'init'
-    alembic -c backend/alembic.ini upgrade head
+alembic -c backend/alembic.ini upgrade head 2>&1 | Out-Host
+if ($LASTEXITCODE -ne 0) {
+    alembic -c backend/alembic.ini revision --autogenerate -m 'init' 2>&1 | Out-Host
+    alembic -c backend/alembic.ini upgrade head 2>&1 | Out-Host
 }
 python -m backend.seed
 $api = Start-Process uvicorn -ArgumentList 'backend.app:app','--reload','--port','8000' -NoNewWindow -PassThru
