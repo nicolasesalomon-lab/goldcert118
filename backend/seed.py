@@ -3,7 +3,7 @@ from datetime import datetime, date
 from passlib.hash import bcrypt
 from sqlalchemy.orm import Session
 
-from .app.database import SessionLocal
+from .app.extensions import SessionLocal
 from .app import models
 
 

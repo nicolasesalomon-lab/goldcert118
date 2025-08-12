@@ -296,3 +296,17 @@ Paleta “GoldCert”: oro/dorado + gris oscuro/negro, tipografía sistema, card
    ```
 
 La base usa SQLite por defecto (`sqlite:///./goldcert.db`). Si la variable de entorno `DATABASE_URL` está definida, se usará esa conexión.
+
+## Backend API
+
+1. Install dependencies and apply migrations:
+   ```bash
+   pip install -r backend/requirements.txt
+   alembic -c backend/alembic.ini upgrade head
+   python -m backend.seed
+   ```
+2. Start the server:
+   ```bash
+   uvicorn backend.app:app --reload --port 8000
+   ```
+3. Docs available at `http://localhost:8000/docs`.
