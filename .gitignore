@@ -1,0 +1,12 @@
+.venv
+node_modules
+backend/app/static
+backend/goldcert.db
+goldcert.db
+__pycache__
+.DS_Store
+*.pyc
+front/node_modules
+frontend/node_modules
+dist
+
