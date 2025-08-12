@@ -279,3 +279,75 @@ Log de “todo ok” con URLs.
 12) Estilo UI
 Paleta “GoldCert”: oro/dorado + gris oscuro/negro, tipografía sistema, cards con sombras suaves, layout con header + nav y secciones (inspirado en tu HTML). No copiar código tal cual; reinterpretar con Tailwind y shadcn/ui. Fronthtml_grok4
 
+
+## Base de datos
+
+1. Instalar dependencias backend:
+   ```bash
+   pip install -r backend/requirements.txt
+   ```
+2. Aplicar la migración inicial:
+   ```bash
+   alembic -c backend/alembic.ini upgrade head
+   ```
+3. Cargar los datos de ejemplo:
+   ```bash
+   python -m backend.seed
+   ```
+
+La base usa SQLite por defecto (`sqlite:///./goldcert.db`). Si la variable de entorno `DATABASE_URL` está definida, se usará esa conexión.
+
+## Backend API
+
+1. Install dependencies and apply migrations:
+   ```bash
+   pip install -r backend/requirements.txt
+   alembic -c backend/alembic.ini upgrade head
+   python -m backend.seed
+   ```
+2. Start the server:
+   ```bash
+   uvicorn backend.app:app --reload --port 8000
+   ```
+3. Docs available at `http://localhost:8000/docs`.
+
+## Frontend
+
+1. Install dependencies and run the dev server:
+   ```bash
+   cd frontend
+   npm install
+   npm run dev
+   ```
+   The Vite config proxies any request starting with `/api` to the backend running at `http://localhost:8000`.
+
+2. Build for production:
+   ```bash
+   cd frontend
+   npm run build
+   ```
+
+## One-click scripts
+
+- `./scripts/dev.sh` (Linux/Mac) or `scripts/dev.ps1` (Windows) bootstraps the project: creates a virtualenv, installs backend deps, runs migrations (creating the initial revision if needed), seeds data, runs Ruff and ESLint, starts the API and Vite dev server, and performs quick checks (ODC list and admin login). When running, visit:
+  - Frontend: http://localhost:5173
+  - API docs: http://localhost:8000/docs
+
+- `./scripts/build.sh` / `scripts/build.ps1` build the frontend and copy the `dist` output into `backend/app/static`, which FastAPI serves in production.
+
+## Environment variables
+
+- `DATABASE_URL` – override the default SQLite DSN to point to a PostgreSQL database.
+- `JWT_SECRET` – secret used to sign JWT access tokens.
+
+## Troubleshooting
+
+- **Port 8000 or 5173 in use**: edit the scripts or run `uvicorn`/`vite` with a different `--port`.
+- **Permission denied in `backend/app/uploads`**: ensure the folder exists and is writable.
+- **`Failed to fetch` in the browser**: verify `frontend/vite.config.ts` proxy to `/api` and `src/lib/axios.ts` base URL.
+- **`404 /auth/login`**: backend not running or router not included.
+
+## Tests and quality
+
+- Python: `ruff check backend` and `pytest` for the certification rules unit test.
+- TypeScript: `npm run lint` ensures code style via ESLint + Prettier. An E2E test for “crear proveedor → aparece en listado” is planned but not wired to a runner yet.
